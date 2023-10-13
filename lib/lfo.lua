@@ -286,7 +286,7 @@ local function process_lfo(id)
 
       if _lfo.shape == 'sine' or  _lfo.shape == 'tri' or _lfo.shape == 'up' or _lfo.shape == 'down' then
         value = util.clamp(value, min, max)
-        _lfo.scaled = value + offset * (_lfo.baseline == 'center' and 0.5 or 1)
+        _lfo.scaled = value + offset
       elseif _lfo.shape == 'square' then
         local square_value = value >= _lfo.mid and max or min
         square_value = util.linlin(min, max, _lfo.scaled_min, _lfo.scaled_max, square_value)
