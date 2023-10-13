@@ -183,6 +183,20 @@ local function change_bound(target, which, value)
   scale_lfo(target)
 end
 
+local function change_offset(id, value)
+  if value == "max" then
+    params:lookup_param('lfo_offset_'..id).min = -100
+    params:lookup_param('lfo_offset_'..id).max = 0
+  elseif value == "center" then
+    params:lookup_param('lfo_offset_'..id).min = -50
+    params:lookup_param('lfo_offset_'..id).max = 50
+  else
+    params:lookup_param('lfo_offset_'..id).min = 0
+    params:lookup_param('lfo_offset_'..id).max = 100
+  end
+  params:set('lfo_offset_'..id, 0)
+end
+
 local function change_baseline(target, value)
   target.baseline = value
   scale_lfo(target)
@@ -465,6 +479,7 @@ function LFO:add_params(id,sep,group)
       params:add_option("lfo_baseline_"..id, "lfo baseline", baseline_options, tab.key(baseline_options,'from '..self:get('baseline')))
       params:set_action("lfo_baseline_"..id, function(x)
         self:set('baseline',string.gsub(params:lookup_param("lfo_baseline_"..id).options[x],"from ",""))
+        change_offset(id, self:get('baseline'))
         _menu.rebuild_params()
       end)
       
